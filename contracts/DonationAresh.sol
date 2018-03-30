@@ -13,11 +13,20 @@ contract DonationAresh {
    //fall back function that gets an amount of ether and sends to Creator
     function () payable public{
         safeMoney(msg.value);
+        spending(msg.value);
     }
+
+    
     
     //send the amount to the creator
     function safeMoney(uint amountRaised) public{
         amount = amountRaised + amount;
         creator.send(amountRaised);
+    }
+
+
+    function spending(uint amountDecreased) public{
+        amount = amount - amountDecreased;
+        creator.send(amountDecreased);
     }
 }
