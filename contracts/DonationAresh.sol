@@ -7,7 +7,7 @@ contract DonationAresh {
 
     function DonationAresh() public{
         creator = msg.sender;
-        amount =0;
+        amount = 0;
     }
    
    //fall back function that gets an amount of ether and sends to Creator
