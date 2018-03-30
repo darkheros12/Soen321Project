@@ -36,8 +36,8 @@ contract Election {
     );
 
     function Election () public {
-        addCandidate("Candidate 1");
-        addCandidate("Candidate 2");
+        addCandidate("The Phi Nguyen");
+        addCandidate("Khatib Tamal");
     }
 
     function addCandidate (string _name) private {
