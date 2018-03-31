@@ -2,18 +2,37 @@ pragma solidity ^0.4.2;
 
 contract DonationAresh {
 
-    address creator; //this is Aresh
+    address public creator; //this is Aresh
     uint public amount;
+    //mine
+    uint256 sendAmount;
 
     function DonationAresh() public{
         creator = msg.sender;
-        amount =0;
+        amount = 0;
     }
    
    //fall back function that gets an amount of ether and sends to Creator
     function () payable public{
         safeMoney(msg.value);
         spending(msg.value);
+    }
+
+    //mine
+
+    
+
+    function MoneyFountain(){
+        creator = msg.sender;
+        sendAmount = amount;
+    }
+
+    function getBalance() returns (uint){
+        return address(this).balance;
+    }
+
+    function sendWei(address recp) returns (bool){        
+        recp.send(sendAmount);
     }
 
     
@@ -24,9 +43,10 @@ contract DonationAresh {
         creator.send(amountRaised);
     }
 
-
+    
     function spending(uint amountDecreased) public{
         amount = amount - amountDecreased;
         creator.send(amountDecreased);
     }
+
 }
