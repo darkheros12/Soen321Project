@@ -1,9 +1,24 @@
 VoteView = {
 
   renderOngoingVotes: function(data) {
-    /*
-    render data
-    */
+    var accnts = "";
+    for(var x=0; x<data.length; x++) {
+      var blockUnblock = "";
+      if(data[x].forBlock === 1) {
+        var blockUnblock = "<label id=\"block"+x+"\">Vote For Blocking</label><br/>";
+      }
+      else {
+        var blockUnblock = "<label id=\"unBlock"+x+"\">Vote For UnBlocking</label><br/>";
+      }
+      var locAccnt = "<label id=\"accnt"+x+"\" value=\""+data[x].account+"\">"+data[x].account+"</label><br/>";
+      var locReason = "<label id=\"reson"+x+"\">"+data[x].reason+"</label><br/>";
+      var yesCount = "<label>Yes Count: "+data.yesCount+"</label><br/>";
+      var noCount = "<label>Yes Count: "+data.noCount+"</label><br/><br/>";
+
+      accnts += blockUnblock + locAccnt + locReason + yesCount + noCount;
+    }
+
+    $('#votesCurrentlyOn').html(accnts);
   },
 
   renderCreateVotes: function(data) {
