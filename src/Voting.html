@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="js/ganacheAccounts.js"> </script>
     
+    
   </head>
   <body>
     <form method="post">
@@ -44,7 +45,7 @@
         
       
         <div class="col-auto">
-          <button type="button" class="btn btn-primary mb-2" onclick="myFunction()">Submit</button>
+          <button type="button" class="btn btn-primary mb-2" onclick="myFunction();">Submit</button>
         </div>
       </div>
     </form> <br>
@@ -119,9 +120,10 @@
         </tbody>
       </table>
     
-    <script src="js/getAccounts.js"></script>
+      <center><input type="submit" name="fetchAddress" value="Fetch Address" onclick="myFunction();"></center>
+     
+      <script src="js/getAccounts.js"></script>
     <script>
-
       function myFunction() {
       
       var oTable = document.getElementById('myTable');
@@ -133,19 +135,20 @@
           for (i = 1; i < rowLength; i++){
 
           
-            if (document.getElementById("exampleRadios1").checked){
+            
               var x = document.getElementById("myTable").rows[i].cells.item(0).innerHTML;
               x=account[i-1];
               document.getElementById("myTable").rows[i].cells.item(0).innerHTML=x;
-            }
-            if (document.getElementById("exampleRadios2").checked){
+            
+            
               var y= document.getElementById("myTable").rows[i].cells.item(0).innerHTML;
               y=account[i-1];
               document.getElementById("myTable").rows[i].cells.item(0).innerHTML=y;
-            }
+            
               
             }
           }
-    </script>
-  </body>
+</script>
+ 
+</body>
 </html>
