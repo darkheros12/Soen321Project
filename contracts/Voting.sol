@@ -33,6 +33,33 @@ contract Voting {
     // Store ongoing votes Count
     uint public onGoingVotesCount;
 
+    //store accounts of all voters
+    mapping (address => OngoingVotes) onGoingVoters;
+    //save all acounts in the aaray
+    address[] public allVoter;
+    
+   
+    
+    //push address of the new voter to the aaray 
+    function setVoters(address _address, uint _id, string _reason, string _account, uint _yesCount, uint _noCount, bool _forblock) public{
+        var thisVoters = onGoingVoters[_address];
+        
+        thisVoters.id = _id;
+        thisVoters.reason = _reason;
+        thisVoters.account = _account;
+        thisVoters.yesCount = _yesCount;
+        thisVoters.noCount = _noCount;
+        thisVoters.forBlock = _forblock;
+        
+        allVoter.push(_address) -1;
+        
+    }
+    
+    //get information of all voters
+    function getVoters() view public returns (address[]){
+        return allVoter;
+    }
+
     // voted event
     event votedEvent (
         uint indexed _candidateId
@@ -54,19 +81,25 @@ contract Voting {
     if block is false, means client is already blocked and we are
     voting to unblock the client
     */
-    function verifyBlock(uint _candidateId) {
-        /*
-        yes means contractor did good job, no means bad job
-        if (block and maxVotes no) {
-            then block client from getting contracts
-        }
 
-        yes means majority wants client unblocked
-        if (!block and maxVotes yes) {
-            then unblock the client
+    function verifyBlock(address _candidateAdd) public {
+        for (uint i = 0; i < allVoter.length; i++) {
+           
+            if(onGoingVoters[_candidateAdd].yesCount > 5){
+                onGoingVoters[_candidateAdd].forBlock = true;
+            }
+            else
+                onGoingVoters[_candidateAdd].forBlock = false;
+            
         }
-        */
+       
+   
     }
+    
+     function getBlock(address _candidateAdd) view public returns(bool){
+        return onGoingVoters[_candidateAdd].forBlock;
+    }
+   
 
     /*
     0 means no, anything else is yes
@@ -92,4 +125,8 @@ contract Voting {
         // trigger voted event
         votedEvent(_candidateId);
     }
+
+
+    
+    
 }
