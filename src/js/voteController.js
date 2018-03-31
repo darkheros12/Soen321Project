@@ -3,7 +3,8 @@ VoteController = {
   contracts: {},
   userAccount: '0x0',
   theInstance: {},
-  voteJson: {},
+  forLoopVotingCounter: 0,
+  //voteJson: [],
 
   init: function() {
     return VoteController.initWeb3();
@@ -46,37 +47,48 @@ VoteController = {
   listenForEvents: function() {
     VoteController.contracts.Voting.deployed().then(function(instance) {
       voteJson = [];
-      theInstance = instance;
-      return theInstance.onGoingVotesCount();
+      VoteController.theInstance = instance;
+      return VoteController.theInstance.onGoingVotesCount();
     }).then(function(onGoingVotesCount) {
 
       var limit = onGoingVotesCount.toNumber();
-      for(var x = 1; x <= limit; x++) {
+      
+      for(var x = 1; x <= onGoingVotesCount.toNumber(); x++) {
       
         var current = {};
-        theInstance.onGoingVotes(i).then(function(voting) {
-          current.id = voting[0];
-          current.reason = voting[1];
-          current.account = voting[2];
-          current.yesCount = voting[3];
-          current.forBlock = voting[4];
+        VoteController.theInstance.onGoingVotes(x).then(function(voting) {
+          if(typeof(voting[0]) !== 'undefined') {
+            current.id = voting[0];
+            current.reason = voting[1];
+            current.account = voting[2];
+            current.yesCount = voting[3];
+            current.forBlock = voting[4];
+            voteJson[VoteController.forLoopVotingCounter] = current;
+            VoteController.forLoopVotingCounter++;
+          }
+          if(voteJson.length === onGoingVotesCount.toNumber()) {
+            /*
+            list all the ongoing votes
+            */
+            VoteView.renderOngoingVotes(voteJson);
+          }
         }).catch(function(error) {
           console.error(error);
-        });
-
-        voteJson[x] = current;
+        });  
       }
+
+    }).then(function(nothing) {
       /*
-      list all the ongoing votes
+      list new votes
       */
-      VoteView.renderOngoingVotes(voteJson);
-
       VoteController.newVotesSection();
-
+      
     }).catch(function(error){
       console.error(error);
     });
   },
+
+
 
   newVotesSection: function() {
       VoteView.renderCreateVotes(web3.eth.accounts);
