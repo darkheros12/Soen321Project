@@ -31,6 +31,7 @@ MoneyController = {
     return MoneyController.initContract();
   },
 
+
   initContract: function() {
     $.getJSON("DonationAresh.json", function(money) {
       // Instantiate a new truffle contract from the artifact
@@ -65,6 +66,7 @@ MoneyController = {
       console.error(err);
     });
   },
+  
 
   spend: function() {
       var amount = $('#amountToSpend').val();
@@ -83,4 +85,6 @@ $(function() {
     MoneyController.init();
   });
 });
+
+
 
