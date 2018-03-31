@@ -6,6 +6,9 @@
 	  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/ganacheAccounts.js"> </script>
+    
   </head>
   <body>
     <form method="post">
@@ -46,11 +49,78 @@
       </div>
     </form> <br>
 
-    
-    <!-- 
-    <script>
 
-      document.getElementById("addressOne").innerHTML = data[1];
+    <table class="table" id="myTable">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Address List</th>
+            <th scope="col">Number of votes</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" id="addressOne"></th>
+            <td id="address1">0</td>
+           
+          </tr>
+          <tr>
+            <th scope="row" id="addressTwo"></th>
+            <td id="address2">0</td>
+            
+          </tr>
+          <tr>
+            <th scope="row" id="addressThree"></th>
+            <td id="address3">0</td>
+           
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressFour"></th>
+            <td id="address4">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressFive"></th>
+            <td id="address5">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressSix"></th>
+            <td id="address6">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressSeven"></th>
+            <td id="address7">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressEight"></th>
+            <td id="address8">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressNine"></th>
+            <td id="address9">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressTen"></th>
+            <td id="address10">0</td>
+            
+          </tr>
+        </tbody>
+      </table>
+    
+    <script src="js/getAccounts.js"></script>
+    <script>
 
       function myFunction() {
       
@@ -60,26 +130,22 @@
           var rowLength = oTable.rows.length;
 
           //loops through rows    
-          for (i = 0; i < rowLength; i++){
+          for (i = 1; i < rowLength; i++){
 
           
-            if (document.getElementById("inlineFormInputGroup1").value===document.getElementById("myTable").rows[i].cells.item(0).innerHTML){
-              if (document.getElementById("exampleRadios1").checked){
-              var x = document.getElementById("myTable").rows[i].cells.item(1).innerHTML;
-              x++;
-              document.getElementById("myTable").rows[i].cells.item(1).innerHTML=x;
+            if (document.getElementById("exampleRadios1").checked){
+              var x = document.getElementById("myTable").rows[i].cells.item(0).innerHTML;
+              x=account[i-1];
+              document.getElementById("myTable").rows[i].cells.item(0).innerHTML=x;
             }
-              if (document.getElementById("exampleRadios2").checked){
-              var y= document.getElementById("myTable").rows[i].cells.item(1).innerHTML;
-              y--;
-              document.getElementById("myTable").rows[i].cells.item(1).innerHTML=y;
+            if (document.getElementById("exampleRadios2").checked){
+              var y= document.getElementById("myTable").rows[i].cells.item(0).innerHTML;
+              y=account[i-1];
+              document.getElementById("myTable").rows[i].cells.item(0).innerHTML=y;
             }
               
             }
           }
-      d
-      }
     </script>
-  -->
   </body>
 </html>

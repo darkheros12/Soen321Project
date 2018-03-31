@@ -7,9 +7,10 @@ GanacheAccounts = {
 		var x;
 		x = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')).eth.
 		getAccounts(function(err, accounts) {
-	 		console.log(accounts);
+	 		//console.log(accounts);
 	 		if(typeof(accounts) !== 'undefined') {
-	 		GanacheAccounts.accounts = accounts;	
+       GanacheAccounts.accounts = accounts;	
+       Test.init();
 	 	}
 	 
 	 	return accounts;
