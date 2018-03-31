@@ -23,6 +23,7 @@ contract Voting {
         uint yesCount;
         uint noCount;
         bool forBlock;
+        address[] voterAddress;
     }
 
     // Store accounts that have voted
@@ -37,6 +38,8 @@ contract Voting {
     mapping (address => OngoingVotes) onGoingVoters;
     //save all acounts in the aaray
     address[] public allVoter;
+    address[] public VotedTo;
+    
     
    
     
@@ -59,7 +62,10 @@ contract Voting {
     function getVoters() view public returns (address[]){
         return allVoter;
     }
-
+    
+  /*  function whoToWhomVoted() view public returns (address[], address[]){
+        return allVoter, 
+    }*/
     // voted event
     event votedEvent (
         uint indexed _candidateId
@@ -73,7 +79,8 @@ contract Voting {
     */
     function addVoting (string _reason, string _account, uint blockOrUnblock) public {
         onGoingVotesCount ++;
-        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock);
+        address[] v;
+        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, v );
     }
 
     /*
@@ -83,16 +90,13 @@ contract Voting {
     */
 
     function verifyBlock(address _candidateAdd) public {
-        for (uint i = 0; i < allVoter.length; i++) {
+        
            
             if(onGoingVoters[_candidateAdd].yesCount > 5){
                 onGoingVoters[_candidateAdd].forBlock = true;
             }
             else
                 onGoingVoters[_candidateAdd].forBlock = false;
-            
-        }
-       
    
     }
     
@@ -122,11 +126,13 @@ contract Voting {
             onGoingVotes[_candidateId].yesCount ++;   
         }
         
+       // address[] loc = onGoingVotes[_candidateId].voterAddress;
+        //oc.push(sender.address());
+        onGoingVotes[_candidateId].voterAddress.push(msg.sender);
+        
         // trigger voted event
         votedEvent(_candidateId);
+        
     }
-
-
-    
-    
+   
 }
