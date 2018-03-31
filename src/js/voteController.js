@@ -4,7 +4,7 @@ VoteController = {
   userAccount: '0x0',
   theInstance: {},
   forLoopVotingCounter: 0,
-  //voteJson: [],
+  voteJson: [],
 
   init: function() {
     return VoteController.initWeb3();
@@ -43,10 +43,18 @@ VoteController = {
     });
   },
 
+  voteYes: function(index) {
+    var x = index;
+  },
+
+  voteNo: function(index) {
+    var x = index;
+  },
+
   // Listen for events emitted from the contract
   listenForEvents: function() {
     VoteController.contracts.Voting.deployed().then(function(instance) {
-      voteJson = [];
+      VoteController.voteJson = [];
       VoteController.theInstance = instance;
       return VoteController.theInstance.onGoingVotesCount();
     }).then(function(onGoingVotesCount) {
@@ -64,14 +72,14 @@ VoteController = {
             current.yesCount = voting[3].toNumber();
             current.noCount = voting[4].toNumber();
             current.forBlock = voting[5];
-            voteJson[VoteController.forLoopVotingCounter] = current;
+            VoteController.voteJson[VoteController.forLoopVotingCounter] = current;
             VoteController.forLoopVotingCounter++;
           }
-          if(voteJson.length === onGoingVotesCount.toNumber()) {
+          if(VoteController.voteJson.length === onGoingVotesCount.toNumber()) {
             /*
             list all the ongoing votes
             */
-            VoteView.renderOngoingVotes(voteJson);
+            VoteView.renderOngoingVotes(VoteController.voteJson);
           }
         }).catch(function(error) {
           console.error(error);

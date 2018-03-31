@@ -13,9 +13,11 @@ VoteView = {
       var locAccnt = "<label id=\"accnt"+x+"\" value=\""+data[x].account+"\">"+data[x].account+"</label><br/>";
       var locReason = "<label id=\"reson"+x+"\">"+data[x].reason+"</label><br/>";
       var yesCount = "<label>Yes Count: "+data[x].yesCount+"</label><br/>";
-      var noCount = "<label>No Count: "+data[x].noCount+"</label><br/><br/>";
+      var noCount = "<label>No Count: "+data[x].noCount+"</label><br/>";
+      var yesBtn = "<button onclick=\"VoteController.voteYes("+x+");\">Vote Yes</button>";
+      var noBtn = "<button onclick=\"VoteController.voteNo("+x+");\">Vote No</button><br/><br/>";
 
-      accnts += blockUnblock + locAccnt + locReason + yesCount + noCount;
+      accnts += blockUnblock + locAccnt + locReason + yesCount + noCount + yesBtn + noBtn;
     }
 
     $('#votesCurrentlyOn').html(accnts);
