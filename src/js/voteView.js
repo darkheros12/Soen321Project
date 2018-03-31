@@ -4,7 +4,7 @@ VoteView = {
     var accnts = "";
     for(var x=0; x<data.length; x++) {
       var blockUnblock = "";
-      if(data[x].forBlock === 1) {
+      if(data[x].forBlock) {
         var blockUnblock = "<label id=\"block"+x+"\">Vote For Blocking</label><br/>";
       }
       else {
@@ -12,8 +12,8 @@ VoteView = {
       }
       var locAccnt = "<label id=\"accnt"+x+"\" value=\""+data[x].account+"\">"+data[x].account+"</label><br/>";
       var locReason = "<label id=\"reson"+x+"\">"+data[x].reason+"</label><br/>";
-      var yesCount = "<label>Yes Count: "+data.yesCount+"</label><br/>";
-      var noCount = "<label>Yes Count: "+data.noCount+"</label><br/><br/>";
+      var yesCount = "<label>Yes Count: "+data[x].yesCount+"</label><br/>";
+      var noCount = "<label>No Count: "+data[x].noCount+"</label><br/><br/>";
 
       accnts += blockUnblock + locAccnt + locReason + yesCount + noCount;
     }

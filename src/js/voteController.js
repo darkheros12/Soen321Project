@@ -61,8 +61,9 @@ VoteController = {
             current.id = voting[0];
             current.reason = voting[1];
             current.account = voting[2];
-            current.yesCount = voting[3];
-            current.forBlock = voting[4];
+            current.yesCount = voting[3].toNumber();
+            current.noCount = voting[4].toNumber();
+            current.forBlock = voting[5];
             voteJson[VoteController.forLoopVotingCounter] = current;
             VoteController.forLoopVotingCounter++;
           }
