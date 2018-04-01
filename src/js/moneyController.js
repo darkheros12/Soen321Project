@@ -47,11 +47,11 @@ MoneyController = {
   listenForEvents: function() {
     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
       moneyJson = {};
-      theInstance = instance;
-      return theInstance.amount();
+      MoneyController.theInstance = instance;
+      return MoneyController.theInstance.amount();
     }).then(function(amount) {
       moneyJson.amount = amount.toNumber();
-      moneyJson.address = theInstance.address;
+      moneyJson.address = MoneyController.theInstance.address;
       MoneyView.render(moneyJson);
     });
   },
@@ -59,20 +59,36 @@ MoneyController = {
   donate: function() {
       var amount = $('#amountToDonate').val();
       MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-      return instance.safeMoney(amount, { from: MoneyController.userAccount });
+      instance.safeMoney({ from: MoneyController.theInstance.address, value:  web3.toWei(amount, "ether")});
+      //instance.safeMoney({ from: MoneyController.theInstance.address});
     }).then(function(result) {
-      MoneyController.listenForEvents();
+     // MoneyController.listenForEvents();
+     var x=0;
+     MoneyController.updateBalance();
     }).catch(function(err) {
+      var x=0;
       console.error(err);
     });
+  },
+
+  updateBalance: function() {
+    var donELem = $('#totalDonations');
+    return MoneyController.theInstance.getBalance({ from: MoneyController.userAccount }).then(function(result) {
+        var x=0;
+        donELem.html("Total: " + result);
+    }).catch(function(err) {
+        var x=0;
+        console.error(err);
+    })
   },
   
 
   spend: function() {
       var x = BlockUnBlockController.contract;
       var amount = $('#amountToSpend').val();
+      var spendOn = $('#contractToSpend').val();
       MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-      return instance.spending(amount, { from: MoneyController.userAccount });
+      return instance.spending(amount, spendOn, { from: MoneyController.theInstance.address });
     }).then(function(result) {
       MoneyController.listenForEvents();
     }).catch(function(err) {
