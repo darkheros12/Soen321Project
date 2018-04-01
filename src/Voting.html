@@ -1,42 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Donation Page ETH</title>
-
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	  <title></title>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+	  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/ganacheAccounts.js"> </script>
+    
+    
   </head>
   <body>
+    <form method="post">
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInputGroup">Address</label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+            <input type="text" class="form-control" id="inlineFormInputGroup1" placeholder="Address" required>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="form-check">
+      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+      <label class="form-check-label" for="exampleRadios1">
+        Block this account
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+      <label class="form-check-label" for="exampleRadios2">
+        Unblock this address
+      </label>
+    </div>
+        </div>
+
+        <div class="col-auto">
+          <label class="sr-only" for="exampleFormControlTextarea1">Reasons</label>
+          <input type="text" class="form-control mb-2" id="exampleFormControlTextarea1" placeholder="Reasons..." rows="3" required>
+        </div>
+        
+      
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary mb-2" onclick="myFunction();">Submit</button>
+        </div>
+      </div>
+    </form> <br>
+
+
+    <table class="table" id="myTable">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Address List</th>
+            <th scope="col">Number of votes</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" id="addressOne"></th>
+            <td id="address1">0</td>
+           
+          </tr>
+          <tr>
+            <th scope="row" id="addressTwo"></th>
+            <td id="address2">0</td>
+            
+          </tr>
+          <tr>
+            <th scope="row" id="addressThree"></th>
+            <td id="address3">0</td>
+           
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressFour"></th>
+            <td id="address4">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressFive"></th>
+            <td id="address5">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressSix"></th>
+            <td id="address6">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressSeven"></th>
+            <td id="address7">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressEight"></th>
+            <td id="address8">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressNine"></th>
+            <td id="address9">0</td>
+            
+          </tr>
+      
+          <tr>
+            <th scope="row" id="addressTen"></th>
+            <td id="address10">0</td>
+            
+          </tr>
+        </tbody>
+      </table>
     
-    <center>
-        <h1>Voting Page</h1><br/>
+      <center><input type="submit" name="fetchAddress" value="Fetch Address" onclick="myFunction();"></center>
+     
+      <script src="js/getAccounts.js"></script>
+    <script>
+      function myFunction() {
+      
+      var oTable = document.getElementById('myTable');
 
-        <h2>CREATE VOTINGS FOR</h2><br/>
-        <div id="createVotingFor"></div>
-    
-        <h2>VOTEST CURRENTLY ON</h2><br/>
-        <div id="votesCurrentlyOn"></div>
+          //gets rows of table
+          var rowLength = oTable.rows.length;
 
-    </center>
+          //loops through rows    
+          for (i = 1; i < rowLength; i++){
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/web3.min.js"></script>
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/voteController.js"></script>
-    <script src="js/voteView.js"></script>
-  </body>
+          
+            
+              var x = document.getElementById("myTable").rows[i].cells.item(0).innerHTML;
+              x=account[i-1];
+              document.getElementById("myTable").rows[i].cells.item(0).innerHTML=x;
+            
+            
+              var y= document.getElementById("myTable").rows[i].cells.item(0).innerHTML;
+              y=account[i-1];
+              document.getElementById("myTable").rows[i].cells.item(0).innerHTML=y;
+            
+              
+            }
+          }
+</script>
+ 
+</body>
 </html>

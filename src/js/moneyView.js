@@ -5,6 +5,18 @@ MoneyView = {
   }
 };
 
+$("#donateButton").click(function(){
+  $("#amountToDonate").val('');
+  $("contractToDonate").val('');
+});
+
+$("#spendButton").click(function(){
+  $("#amountToSpend").val('');
+  $("contractToSpend").val('');
+});
+
+
+
 /*$(function() {
   $(window).load(function() {
     MoneyView.init();
