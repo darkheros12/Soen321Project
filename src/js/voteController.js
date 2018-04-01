@@ -52,7 +52,7 @@ VoteController = {
   },
 
   vote: function(index, yesOrNo) {
-    return VoteController.theInstance.vote(VoteController.voteJson[index].id.toNumber(), yesOrNo, { from: VoteController.userAccount.account});
+    return VoteController.theInstance.vote(VoteController.voteJson[index].id.toNumber(), yesOrNo, { from: VoteController.userAccount});
   },
 
   // Listen for events emitted from the contract
@@ -76,13 +76,16 @@ VoteController = {
             current.yesCount = voting[3].toNumber();
             current.noCount = voting[4].toNumber();
             current.forBlock = voting[5];
+            current.voters = voting[6];
             VoteController.voteJson[VoteController.forLoopVotingCounter] = current;
             VoteController.forLoopVotingCounter++;
+
           }
           if(VoteController.voteJson.length === onGoingVotesCount.toNumber()) {
             /*
             list all the ongoing votes
             */
+
             VoteView.renderOngoingVotes(VoteController.voteJson);
           }
         }).catch(function(error) {

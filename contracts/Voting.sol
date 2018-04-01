@@ -23,6 +23,7 @@ contract Voting {
         uint yesCount;
         uint noCount;
         bool forBlock;
+        address[] voterAddress;
     }
 
     // Store accounts that have voted
@@ -34,9 +35,9 @@ contract Voting {
     uint public onGoingVotesCount;
 
     // voted event
-    event votedEvent (
+    /*event votedEvent (
         uint indexed _candidateId
-    );
+    );*/
 
     function Voting () public {
     }
@@ -46,7 +47,8 @@ contract Voting {
     */
     function addVoting (string _reason, string _account, uint blockOrUnblock) public {
         onGoingVotesCount ++;
-        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock);
+        address[] v;
+        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, v);
     }
 
     /*
@@ -54,18 +56,26 @@ contract Voting {
     if block is false, means client is already blocked and we are
     voting to unblock the client
     */
-    function verifyBlock(uint _candidateId) {
-        /*
-        yes means contractor did good job, no means bad job
-        if (block and maxVotes no) {
-            then block client from getting contracts
-        }
+    function verifyBlock(uint _candidateAdd) {
 
-        yes means majority wants client unblocked
-        if (!block and maxVotes yes) {
-            then unblock the client
+            /*if(onGoingVoters[_candidateAdd].yesCount > 5){
+                onGoingVoters[_candidateAdd].forBlock = true;
+            }
+            else
+                onGoingVoters[_candidateAdd].forBlock = false;*/
+        //will need to redo this
+    }
+
+    /*
+    check if the person already voted for a specific struct
+    */
+    function hasVoted (uint _candidateId) public returns (bool) {
+        for(uint x =0; x < onGoingVotes[_candidateId].voterAddress.length; x++) {
+            if(onGoingVotes[_candidateId].voterAddress[x] == msg.sender) {
+                return true;
+            }
         }
-        */
+        return false;
     }
 
     /*
@@ -73,23 +83,26 @@ contract Voting {
     */
     function vote (uint _candidateId, uint yesOrNo) public {
         // require that they haven't voted before
-        require(!voters[msg.sender]);
+       // require(!voters[msg.sender]);
 
         // require a valid candidate
         require(_candidateId > 0 && _candidateId <= onGoingVotesCount);
 
         // record that voter has voted
-        voters[msg.sender] = true;
+        //voters[msg.sender] = true;
 
         // update candidate vote Count
-        if(yesOrNo == 0) {
-            onGoingVotes[_candidateId].noCount ++;    
-        }
-        else {
-            onGoingVotes[_candidateId].yesCount ++;   
+        if(!hasVoted(_candidateId)) {
+            if(yesOrNo == 0) {
+                onGoingVotes[_candidateId].noCount ++;
+            }
+            else {
+                onGoingVotes[_candidateId].yesCount ++;
+            }
+            onGoingVotes[_candidateId].voterAddress.push(msg.sender);
         }
         
         // trigger voted event
-        votedEvent(_candidateId);
+       // votedEvent(_candidateId);
     }
 }
