@@ -44,11 +44,15 @@ VoteController = {
   },
 
   voteYes: function(index) {
-    var x = index;
+    VoteController.vote(index, 1);
   },
 
   voteNo: function(index) {
-    var x = index;
+    VoteController.vote(index, 0);
+  },
+
+  vote: function(index, yesOrNo) {
+    return VoteController.theInstance.vote(VoteController.voteJson[index].id.toNumber(), yesOrNo, { from: VoteController.userAccount.account});
   },
 
   // Listen for events emitted from the contract
@@ -91,7 +95,7 @@ VoteController = {
       list new votes
       */
       VoteController.newVotesSection();
-      
+
     }).catch(function(error){
       console.error(error);
     });
@@ -100,7 +104,7 @@ VoteController = {
 
 
   newVotesSection: function() {
-      VoteView.renderCreateVotes(web3.eth.accounts);
+      VoteView.renderCreateVotes(GanacheAccounts.accounts);
   },
 
   newVoteSubmit: function(num) {
