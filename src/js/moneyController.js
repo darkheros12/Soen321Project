@@ -53,44 +53,65 @@ MoneyController = {
       moneyJson.amount = amount.toNumber();
       moneyJson.address = MoneyController.theInstance.address;
       MoneyView.render(moneyJson);
+      return MoneyController.theInstance.spendCounter();
+    }).then(function(expn) {
+
+        var limit = expn.toNumber();
+        var expJson = [];
+        var loopCounter = 0;
+
+        for(var x=1; x <= limit; x++) {
+
+            var current = {};
+            MoneyController.theInstance.expenditures(x).then(function(exp) {
+                if(typeof(exp[0] !== undefined)) {
+                    current.id = exp[0];
+                    current.reason = exp[1];
+                    current.account = exp[2];
+                    current.amount = exp[3];
+                    expJson[loopCounter] = current;
+                    loopCounter++;
+                }
+
+                if(expJson.length == limit) {
+                    MoneyView.renderExpenditures(expJson);
+                }
+            }).catch(function(err) {
+                console.error(err);
+            });
+
+        }
     });
   },
 
   donate: function() {
       var amount = $('#amountToDonate').val();
-      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-      instance.safeMoney({ from: MoneyController.theInstance.address, value:  web3.toWei(amount, "ether")});
-      //instance.safeMoney({ from: MoneyController.theInstance.address});
+     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+     MoneyController.theInstance = instance;
+      return instance.safeMoney(amount, { from: MoneyController.userAccount });
     }).then(function(result) {
-     // MoneyController.listenForEvents();
-     var x=0;
-     MoneyController.updateBalance();
+      return MoneyController.theInstance.amount().then(function(amnt) {
+        MoneyView.updateTotal(amnt.toNumber());
+      }) .catch(function(err) {
+        console.error(err);
+      });
     }).catch(function(err) {
-      var x=0;
       console.error(err);
     });
-  },
-
-  updateBalance: function() {
-    var donELem = $('#totalDonations');
-    return MoneyController.theInstance.getBalance({ from: MoneyController.userAccount }).then(function(result) {
-        var x=0;
-        donELem.html("Total: " + result);
-    }).catch(function(err) {
-        var x=0;
-        console.error(err);
-    })
   },
   
 
   spend: function() {
-      var x = BlockUnBlockController.contract;
       var amount = $('#amountToSpend').val();
-      var spendOn = $('#contractToSpend').val();
+      var reason = $('#reasonToSpend').val();
       MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-      return instance.spending(amount, spendOn, { from: MoneyController.theInstance.address });
+      return instance.spending(amount, MoneyController.userAccount, reason);
     }).then(function(result) {
-      MoneyController.listenForEvents();
+      return MoneyController.theInstance.amount().then(function(amnt) {
+        MoneyView.updateTotal(amnt.toNumber());
+      }) .catch(function(err) {
+        console.error(err);
+      });
     }).catch(function(err) {
       console.error(err);
     });
