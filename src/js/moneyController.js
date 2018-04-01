@@ -69,6 +69,7 @@ MoneyController = {
   
 
   spend: function() {
+      var x = BlockUnBlockController.contract;
       var amount = $('#amountToSpend').val();
       MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
       return instance.spending(amount, { from: MoneyController.userAccount });
