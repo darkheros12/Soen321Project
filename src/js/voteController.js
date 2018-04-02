@@ -158,6 +158,7 @@ VoteController = {
         }
     }
     VoteView.renderCreateVotes(data);
+
   },
 
   getBlockedList: function() {
@@ -205,7 +206,7 @@ VoteController = {
     var reason = $('#reason' + num).val();
     var accnt = $('#accnt' + num).text();
     var blockUnblock = $('#blockUnblock' + num).val();
-    
+
     VoteController.contracts.Voting.deployed().then(function(instance) {
       return instance.addVoting(reason, accnt, parseInt(blockUnblock), {from: VoteController.userAccount});
     }).then(function(result) {

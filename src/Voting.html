@@ -11,6 +11,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
+    <script src="js/getAccounts.js"></script>
     <script src="js/blockUnBlockController.js"></script>
     <script src="js/voteController.js"></script>
     <script src="js/voteView.js"></script>
@@ -18,7 +19,7 @@
     
   </head>
   <body>
-    <form method="post">
+    <!--<form method="post">
       <div class="form-row align-items-center">
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInputGroup">Address</label>
@@ -54,86 +55,113 @@
           <button type="button" class="btn btn-primary mb-2" onclick="myFunction();">Submit</button>
         </div>
       </div>
-    </form> <br>
+    </form>-->
 
-         <h2>CREATE VOTINGS FOR</h2><br/>
-        <div id="createVotingFor"></div>
+    <br>
 
-        <h2>VOTEST CURRENTLY ON</h2><br/>
-        <div id="votesCurrentlyOn"></div>
-
-    <table class="table" id="myTable">
+    <a href="http://localhost:3000/Voting.html#votesCurrentlyOn"><button id="top">Go To Ongoing Ballots</button></a><br/><br/>
+        <table class="table" id="myTable">
         <thead class="thead-dark">
           <tr>
             <th scope="col">Address List</th>
             <th scope="col">Number of votes</th>
-            
+
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row" id="addressOne"></th>
-            <td id="address1">0</td>
-           
+            <td id="address1">
+              <a href="http://localhost:3000/Voting.html#accnt0"><button>Go to Account</button></a>
+            </td>
+
           </tr>
           <tr>
             <th scope="row" id="addressTwo"></th>
-            <td id="address2">0</td>
-            
+            <td id="address2">
+              <a href="http://localhost:3000/Voting.html#accnt1"><button>Go to Account</button></a>
+            </td>
+
+
           </tr>
           <tr>
             <th scope="row" id="addressThree"></th>
-            <td id="address3">0</td>
-           
+            <td id="address3">
+              <a href="http://localhost:3000/Voting.html#accnt2"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressFour"></th>
-            <td id="address4">0</td>
-            
+            <td id="address4">
+              <a href="http://localhost:3000/Voting.html#accnt3"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressFive"></th>
-            <td id="address5">0</td>
-            
+            <td id="address5">
+              <a href="http://localhost:3000/Voting.html#accnt4"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressSix"></th>
-            <td id="address6">0</td>
-            
+            <td id="address6">
+              <a href="http://localhost:3000/Voting.html#accnt5"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressSeven"></th>
-            <td id="address7">0</td>
-            
+            <td id="address7">
+              <a href="http://localhost:3000/Voting.html#accnt6"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressEight"></th>
-            <td id="address8">0</td>
-            
+            <td id="address8">
+              <a href="http://localhost:3000/Voting.html#accnt7"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressNine"></th>
-            <td id="address9">0</td>
-            
+            <td id="address9">
+              <a href="http://localhost:3000/Voting.html#accnt8"><button>Go to Account</button></a>
+            </td>
+
           </tr>
-      
+
           <tr>
             <th scope="row" id="addressTen"></th>
-            <td id="address10">0</td>
-            
+            <td id="address10">
+              <a href="http://localhost:3000/Voting.html#accnt9"><button>Go to Account</button></a>
+            </td>
+
           </tr>
         </tbody>
       </table>
-    
-      <center><input type="submit" name="fetchAddress" value="Fetch Address" onclick="myFunction();"></center>
+
+      <!--<center><input type="submit" name="fetchAddress" value="Fetch Address" onclick="myFunction();"></center>-->
+
+         <h2>ACCOUNTS</h2><br/>
+      <div class="col-auto" id="createVotingFor"></div>
+
+
+        <h2>ONGOING BALLOTS</h2><br/>
+        <div class="col-auto" id="votesCurrentlyOn"></div>
+
+
      
-      <script src="js/getAccounts.js"></script>
+
     <script>
       function myFunction() {
       
