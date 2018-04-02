@@ -27,15 +27,40 @@ VoteView = {
 
   renderCreateVotes: function(data) {
     var accnts = '';
+
     for(var x=0; x<data.length; x++) {
-    if(VoteView.isBlocked(data[x])) {
+    var locReason = "";
+    var locBlkUnBlk = "";
+    var locBtn = "";
+    var notes = "";
+    if(VoteView.isBlocked(data[x].addr)) {
         accnts += "<label>BLOCKED</label><br/>"
     }
-      var locAccnt = "<label id=\"accnt"+x+"\" value=\""+data[x]+"\">"+data[x]+"</label><br/>";
-      var locReason = "<label>Reason</label><input type=\"text\" id=\"reason"+x+"\"></input><br/>";
-      var locBlkUnBlk = "<label>Block=1, else whatever</label><input type=\"number\" id=\"blockUnblock"+x+"\"></input><br/>";
-      var locBtn = "<button onclick=\"VoteController.newVoteSubmit("+x+");\">Submit</button><br/><br/>"
-      accnts += locAccnt + locReason + locBlkUnBlk + locBtn;
+      var locAccnt = "<label id=\"accnt"+x+"\" value=\""+data[x].addr+"\">"+data[x].addr+"</label><br/>";
+
+      if(!VoteView.isVotingOn(data[x])) {
+          locReason = "<label>Reason</label><input type=\"text\" id=\"reason"+x+"\"></input><br/>";
+
+           var blkUnBlkVal = 1;
+           var btnLabel = "Trigger Block Ballot";
+          if(VoteView.isBlocked(data[x].addr)) {
+            blkUnBlkVal = 2;
+            btnLabel = "Trigger Un-Block Ballot";
+          }
+
+          locBlkUnBlk = "<input type=\"hidden\" id=\"blockUnblock"+x+"\" value=\""+blkUnBlkVal+"\"></input>";
+          locBtn = "<button onclick=\"VoteController.newVoteSubmit("+x+");\">"+btnLabel+"</button><br/>"
+      }
+      else {
+        if(data[x].forBlock) {
+            notes = "<label>Voting on for blocking account</label>"
+        }
+        else {
+            notes = "<label>Voting on for un blocking account</label>"
+        }
+      }
+
+      accnts += locAccnt + locReason + locBlkUnBlk + locBtn + notes + "<br/>";
     }
 
     $('#createVotingFor').html(accnts);
@@ -48,6 +73,10 @@ VoteView = {
         }
     }
     return false;
+  },
+
+  isVotingOn: function(accnt) {
+    return typeof(accnt.votingOn) != 'undefined' && accnt.votingOn;
   },
 };
 

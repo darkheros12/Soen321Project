@@ -139,7 +139,25 @@ VoteController = {
 
 
   newVotesSection: function() {
-    VoteView.renderCreateVotes(GanacheAccounts.accounts);
+
+    var data = [];
+    for(var x=0; x<GanacheAccounts.accounts.length; x++) {
+        data[x] = {};
+        data[x].addr = GanacheAccounts.accounts[x];
+    }
+
+    for(var x=0; x<VoteController.voteJson.length; x++) {
+
+        if(!VoteController.voteJson[x].complete) {
+            for(var y=0; y<GanacheAccounts.accounts.length; y++) {
+                if(VoteController.voteJson[x].account === GanacheAccounts.accounts[y]) {
+                    data[y].votingOn = true;
+                    data[y].forBlock = VoteController.voteJson[x].forBlock;
+                }
+            }
+        }
+    }
+    VoteView.renderCreateVotes(data);
   },
 
   getBlockedList: function() {
