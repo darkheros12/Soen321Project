@@ -39,7 +39,18 @@ MoneyController = {
       // Connect provider to interact with contract
       MoneyController.contracts.DonationAresh.setProvider(MoneyController.web3Provider);
 
-      MoneyController.listenForEvents();
+      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+        instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
+            var x=0;
+        }).catch(function(err) {
+            console.error(err);
+        });
+      }).then(function() {
+        MoneyController.listenForEvents();
+      }).catch(function(error) {
+        console.error(error);
+      });
+
     });
   },
 
@@ -108,7 +119,6 @@ MoneyController = {
       var amount = $('#amountToSpend').val();
       var reason = $('#reasonToSpend').val();
      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-     MoneyController.setBlobkUnBlockAddr();
       return instance.spending(amount, MoneyController.userAccount, reason);
     }).then(function(result) {
       return MoneyController.theInstance.amount().then(function(amnt) {

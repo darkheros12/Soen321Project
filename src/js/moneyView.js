@@ -6,7 +6,7 @@ MoneyView = {
 
   renderExpenditures: function(data) {
 
-  }
+  },
 
   updateTotal: function(total) {
     $('#totalDonations').text("Total: " + total);

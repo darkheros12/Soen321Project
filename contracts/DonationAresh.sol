@@ -19,6 +19,7 @@ contract DonationAresh {
     uint public spendCounter;
     mapping(uint => Expenditures) public expenditures;
     bool private blkUnBlkSet;
+    BlockUnBlock b;
 
     function DonationAresh() public{
         creator = msg.sender;
@@ -59,6 +60,7 @@ contract DonationAresh {
     function setBlkUnBlkAddress(address addr) public {
         if(!blkUnBlkSet) {
             blockUnBlockAddr = addr;
+            b = BlockUnBlock(blockUnBlockAddr);
         }
     }
 
@@ -73,11 +75,6 @@ contract DonationAresh {
     }
 
     function isBlocked(address toCheck) public returns (bool) {
-        BlockUnBlock b = BlockUnBlock(blockUnBlockAddr);
         return b.isBlocked(toCheck);
     }
 }
-
-/*contract BlockUnBlock {
-    function isBlocked(address toCheck) returns (bool);
-}*/
