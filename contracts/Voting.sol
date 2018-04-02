@@ -25,8 +25,8 @@ contract Voting {
         uint yesCount;
         uint noCount;
         bool forBlock;
-        address[] voterAddress;
         bool complete;
+        address[] voterAddress;
     }
 
     // Store accounts that have voted
@@ -38,6 +38,7 @@ contract Voting {
     uint public onGoingVotesCount;
 
     bool private blkUnBlkSet;
+    bool public blkUnBlkSetExtern;
     BlockUnBlock b;
     address public blockUnBlockAddr;
     uint votesForSuccess = 2;
@@ -57,12 +58,13 @@ contract Voting {
     function addVoting (string _reason, string _account, uint blockOrUnblock) public {
         onGoingVotesCount ++;
         address[] v;
-        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, v, false);
+        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, false, v);
     }
 
     function setBlkUnBlkAddress(address addr) public {
         if(!blkUnBlkSet) {
             blkUnBlkSet = true;
+            blkUnBlkSetExtern = true;
             blockUnBlockAddr = addr;
             b = BlockUnBlock(blockUnBlockAddr);
         }

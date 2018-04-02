@@ -19,6 +19,7 @@ contract DonationAresh {
     uint public spendCounter;
     mapping(uint => Expenditures) public expenditures;
     bool private blkUnBlkSet;
+    bool public blkUnBlkSetExtern;
     BlockUnBlock b;
 
     function DonationAresh() public{
@@ -60,6 +61,7 @@ contract DonationAresh {
     function setBlkUnBlkAddress(address addr) public {
         if(!blkUnBlkSet) {
             blkUnBlkSet = true;
+            blkUnBlkSetExtern = true;
             blockUnBlockAddr = addr;
             b = BlockUnBlock(blockUnBlockAddr);
         }

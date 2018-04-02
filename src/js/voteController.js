@@ -41,11 +41,19 @@ VoteController = {
       VoteController.contracts.Voting.setProvider(VoteController.web3Provider);
 
       VoteController.contracts.Voting.deployed().then(function(instance) {
-        instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
-            var x=0;
-        }).catch(function(err) {
-            console.error(err);
+
+        instance.blkUnBlkSetExtern().then(function(val) {
+            if(!val) {
+                instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
+                    var x=0;
+                }).catch(function(err) {
+                    console.error(err);
+                });
+            }
+        }).catch(function(error) {
+           console.error(error);
         });
+
       }).then(function() {
         VoteController.listenForEvents();
       }).catch(function(error) {
@@ -101,8 +109,7 @@ VoteController = {
             current.yesCount = voting[3].toNumber();
             current.noCount = voting[4].toNumber();
             current.forBlock = voting[5];
-            current.voters = voting[6];
-            current.complete = voting[7];
+            current.complete = voting[6];
             VoteController.voteJson[VoteController.forLoopVotingCounter] = current;
             VoteController.forLoopVotingCounter++;
 
@@ -142,6 +149,7 @@ VoteController = {
     BlockUnBlockController.theInstance.total().then(function(val) {
         limit = val.toNumber();
         if(limit === 0) {
+            VoteView.renderOngoingVotes(VoteController.voteJson);
             VoteController.newVotesSection();
         }
         for(var x=1; x<=limit; x++) {

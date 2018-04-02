@@ -40,11 +40,19 @@ MoneyController = {
       MoneyController.contracts.DonationAresh.setProvider(MoneyController.web3Provider);
 
       MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-        instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
-            var x=0;
-        }).catch(function(err) {
-            console.error(err);
+
+        instance.blkUnBlkSetExtern().then(function(val) {
+                if(!val) {
+                    instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
+                    var x=0;
+                }).catch(function(err) {
+                     console.error(err);
+                });
+            }
+        }).catch(function(error) {
+            console.error(error);
         });
+
       }).then(function() {
         MoneyController.listenForEvents();
       }).catch(function(error) {
