@@ -62,6 +62,7 @@ contract Voting {
 
     function setBlkUnBlkAddress(address addr) public {
         if(!blkUnBlkSet) {
+            blkUnBlkSet = true;
             blockUnBlockAddr = addr;
             b = BlockUnBlock(blockUnBlockAddr);
         }

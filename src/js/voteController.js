@@ -85,7 +85,11 @@ VoteController = {
     }).then(function(onGoingVotesCount) {
 
       var limit = onGoingVotesCount.toNumber();
-      
+
+      if(limit === 0) {
+        VoteController.getBlockedList();
+      }
+
       for(var x = 1; x <= onGoingVotesCount.toNumber(); x++) {
 
         VoteController.theInstance.onGoingVotes(x).then(function(voting) {
@@ -137,6 +141,9 @@ VoteController = {
 
     BlockUnBlockController.theInstance.total().then(function(val) {
         limit = val.toNumber();
+        if(limit === 0) {
+            VoteController.newVotesSection();
+        }
         for(var x=1; x<=limit; x++) {
             BlockUnBlockController.theInstance.blockedHelper(x).then(function(addr) {
             VoteController.blockedList[counter] = addr;
