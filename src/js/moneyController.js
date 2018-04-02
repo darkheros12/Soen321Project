@@ -102,9 +102,13 @@ MoneyController = {
   
 
   spend: function() {
+        //first set the block unblock address
+
+
       var amount = $('#amountToSpend').val();
       var reason = $('#reasonToSpend').val();
-      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+     MoneyController.setBlobkUnBlockAddr();
       return instance.spending(amount, MoneyController.userAccount, reason);
     }).then(function(result) {
       return MoneyController.theInstance.amount().then(function(amnt) {
@@ -115,7 +119,20 @@ MoneyController = {
     }).catch(function(err) {
       console.error(err);
     });
-  }
+  },
+
+  setBlobkUnBlockAddr: function() {
+      BlockUnBlockController.contracts.BlockUnBlock.deployed().then(function(instance) {
+           return MoneyController.theInstance.setBlkUnBlkAddress(instance.address).then(function(val) {
+                var x=0;
+            }).catch(function(err) {
+                console.log(err);
+            })
+      }).catch(function (err) {
+        console.error(err);
+      })
+
+  },
 };
 
 $(function() {

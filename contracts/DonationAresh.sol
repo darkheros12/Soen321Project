@@ -1,5 +1,7 @@
 pragma solidity ^0.4.2;
 
+import "./BlockUnBlock.sol";
+
 contract DonationAresh {
 
     struct Expenditures {
@@ -10,16 +12,19 @@ contract DonationAresh {
     }
 
     address public creator; //this is Aresh
+    address public blockUnBlockAddr;
     uint public amount;
     //mine
     uint256 sendAmount;
     uint public spendCounter;
     mapping(uint => Expenditures) public expenditures;
+    bool private blkUnBlkSet;
 
     function DonationAresh() public{
         creator = msg.sender;
         amount = 0;
         spendCounter = 0;
+        blkUnBlkSet = false;
     }
 
    //fall back function that gets an amount of ether and sends to Creator
@@ -51,20 +56,28 @@ contract DonationAresh {
         return amount;
     }
 
-
-    function spending(uint amountDecreased, string spendOn, string reason) public returns (uint) {
-        amount = amount - amountDecreased;
-        spendCounter++;
-        expenditures[spendCounter] = Expenditures(spendCounter, reason, spendOn, amountDecreased);
-        return amount;
+    function setBlkUnBlkAddress(address addr) public {
+        if(!blkUnBlkSet) {
+            blockUnBlockAddr = addr;
+        }
     }
 
-    function isBlocked(address toCheck, address blockedUnBlocked) public returns (bool) {
-        BlockUnBlock b = BlockUnBlock(blockedUnBlocked);
+    function spending(uint amountDecreased, string spendOn, string reason) public returns (bool) {
+        if(!isBlocked(msg.sender)) {
+            amount = amount - amountDecreased;
+            spendCounter++;
+            expenditures[spendCounter] = Expenditures(spendCounter, reason, spendOn, amountDecreased);
+            return true;
+        }
+        return false;
+    }
+
+    function isBlocked(address toCheck) public returns (bool) {
+        BlockUnBlock b = BlockUnBlock(blockUnBlockAddr);
         return b.isBlocked(toCheck);
     }
 }
 
-contract BlockUnBlock {
+/*contract BlockUnBlock {
     function isBlocked(address toCheck) returns (bool);
-}
+}*/
