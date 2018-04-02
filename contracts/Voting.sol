@@ -14,6 +14,8 @@ contract Election {
 
 pragma solidity ^0.4.2;
 
+import "./BlockUnBlock.sol";
+
 contract Voting {
     // Model ongoing votes
     struct OngoingVotes {
@@ -34,12 +36,17 @@ contract Voting {
     // Store ongoing votes Count
     uint public onGoingVotesCount;
 
+    bool private blkUnBlkSet;
+    BlockUnBlock b;
+    address public blockUnBlockAddr;
+
     // voted event
     /*event votedEvent (
         uint indexed _candidateId
     );*/
 
     function Voting () public {
+        onGoingVotesCount=0;
     }
 
     /*
@@ -49,6 +56,13 @@ contract Voting {
         onGoingVotesCount ++;
         address[] v;
         onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, v);
+    }
+
+    function setBlkUnBlkAddress(address addr) public {
+        if(!blkUnBlkSet) {
+            blockUnBlockAddr = addr;
+            b = BlockUnBlock(blockUnBlockAddr);
+        }
     }
 
     /*

@@ -39,7 +39,19 @@ VoteController = {
       // Connect provider to interact with contract
       VoteController.contracts.Voting.setProvider(VoteController.web3Provider);
 
-      VoteController.listenForEvents();
+      VoteController.contracts.Voting.deployed().then(function(instance) {
+        instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
+            var x=0;
+        }).catch(function(err) {
+            console.error(err);
+        });
+      }).then(function() {
+        VoteController.listenForEvents();
+      }).catch(function(error) {
+        console.error(error);
+      });
+
+      //VoteController.listenForEvents();
     });
   },
 
@@ -66,10 +78,10 @@ VoteController = {
       var limit = onGoingVotesCount.toNumber();
       
       for(var x = 1; x <= onGoingVotesCount.toNumber(); x++) {
-      
-        var current = {};
+
         VoteController.theInstance.onGoingVotes(x).then(function(voting) {
           if(typeof(voting[0]) !== 'undefined') {
+            var current = {};
             current.id = voting[0];
             current.reason = voting[1];
             current.account = voting[2];
