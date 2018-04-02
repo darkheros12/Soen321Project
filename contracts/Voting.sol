@@ -26,6 +26,7 @@ contract Voting {
         uint noCount;
         bool forBlock;
         address[] voterAddress;
+        bool complete;
     }
 
     // Store accounts that have voted
@@ -39,6 +40,7 @@ contract Voting {
     bool private blkUnBlkSet;
     BlockUnBlock b;
     address public blockUnBlockAddr;
+    uint votesForSuccess = 2;
 
     // voted event
     /*event votedEvent (
@@ -55,7 +57,7 @@ contract Voting {
     function addVoting (string _reason, string _account, uint blockOrUnblock) public {
         onGoingVotesCount ++;
         address[] v;
-        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, v);
+        onGoingVotes[onGoingVotesCount] = OngoingVotes(onGoingVotesCount, _reason, _account, 0, 0, 1 == blockOrUnblock, v, false);
     }
 
     function setBlkUnBlkAddress(address addr) public {
@@ -72,11 +74,13 @@ contract Voting {
     */
     function verifyBlock(uint _candidateId, address candidateAddr) {
 
-        if(onGoingVotes[_candidateId].yesCount > 5 && onGoingVotes[_candidateId].forBlock) {
+        if(onGoingVotes[_candidateId].yesCount >= votesForSuccess && onGoingVotes[_candidateId].forBlock) {
             b.block(candidateAddr);
+            onGoingVotes[_candidateId].complete = true;
         }
-        else if(onGoingVotes[_candidateId].yesCount > 5 && !onGoingVotes[_candidateId].forBlock) {
+        else if(onGoingVotes[_candidateId].yesCount >= votesForSuccess && !onGoingVotes[_candidateId].forBlock) {
             b.unBlock(candidateAddr);
+            onGoingVotes[_candidateId].complete = true;
         }
     }
 

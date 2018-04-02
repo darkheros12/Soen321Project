@@ -2,9 +2,9 @@ pragma solidity ^0.4.2;
 
 contract BlockUnBlock {
 
-    mapping(address => bool) blocked;
-    mapping(uint => address) blockedHelper;
-    uint total;
+    mapping(address => bool) public blocked;
+    mapping(uint => address) public blockedHelper;
+    uint public total;
 
     function BlockUnBlock() public {
         total = 0;

@@ -5,6 +5,7 @@ VoteController = {
   theInstance: {},
   forLoopVotingCounter: 0,
   voteJson: [],
+  blockedList: [],
 
   init: function() {
     return VoteController.initWeb3();
@@ -97,6 +98,7 @@ VoteController = {
             current.noCount = voting[4].toNumber();
             current.forBlock = voting[5];
             current.voters = voting[6];
+            current.complete = voting[7];
             VoteController.voteJson[VoteController.forLoopVotingCounter] = current;
             VoteController.forLoopVotingCounter++;
 
@@ -105,8 +107,8 @@ VoteController = {
             /*
             list all the ongoing votes
             */
+                VoteController.getBlockedList();
 
-            VoteView.renderOngoingVotes(VoteController.voteJson);
           }
         }).catch(function(error) {
           console.error(error);
@@ -117,7 +119,6 @@ VoteController = {
       /*
       list new votes
       */
-      VoteController.newVotesSection();
 
     }).catch(function(error){
       console.error(error);
@@ -127,7 +128,31 @@ VoteController = {
 
 
   newVotesSection: function() {
-      VoteView.renderCreateVotes(GanacheAccounts.accounts);
+    VoteView.renderCreateVotes(GanacheAccounts.accounts);
+  },
+
+  getBlockedList: function() {
+    var limit;
+    var counter=0;
+
+    BlockUnBlockController.theInstance.total().then(function(val) {
+        limit = val.toNumber();
+        for(var x=1; x<=limit; x++) {
+            BlockUnBlockController.theInstance.blockedHelper(x).then(function(addr) {
+            VoteController.blockedList[counter] = addr;
+            counter++;
+             if(counter==limit) {
+                VoteView.renderOngoingVotes(VoteController.voteJson);
+                VoteController.newVotesSection();
+             }
+            }).catch(function(error) {
+                console.error(error);
+            });
+        }
+
+    }).catch(function(error) {
+        console.error(error);
+    });
   },
 
   newVoteSubmit: function(num) {
