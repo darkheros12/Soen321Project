@@ -148,21 +148,34 @@ VoteController = {
 
     BlockUnBlockController.theInstance.total().then(function(val) {
         limit = val.toNumber();
+        wasSet = false;
         if(limit === 0) {
+            wasSet = true;
             VoteView.renderOngoingVotes(VoteController.voteJson);
             VoteController.newVotesSection();
         }
         for(var x=1; x<=limit; x++) {
             BlockUnBlockController.theInstance.blockedHelper(x).then(function(addr) {
-            VoteController.blockedList[counter] = addr;
-            counter++;
-             if(counter==limit) {
-                VoteView.renderOngoingVotes(VoteController.voteJson);
-                VoteController.newVotesSection();
-             }
+                BlockUnBlockController.theInstance.blocked(addr).then(function(blked) {
+                   if(blked) {
+                     VoteController.blockedList[counter] = addr;
+                     counter++;
+                     if(counter==limit) {
+                        wasSet = true;
+                        VoteView.renderOngoingVotes(VoteController.voteJson);
+                        VoteController.newVotesSection();
+                     }
+                   }
+                }).catch(function(error) {
+                    console.error(error);
+                });
             }).catch(function(error) {
                 console.error(error);
             });
+        }
+        if(!wasSet) {
+            VoteView.renderOngoingVotes(VoteController.voteJson);
+            VoteController.newVotesSection();
         }
 
     }).catch(function(error) {
