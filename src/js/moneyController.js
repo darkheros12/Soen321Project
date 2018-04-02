@@ -118,8 +118,9 @@ MoneyController = {
 
       var amount = $('#amountToSpend').val();
       var reason = $('#reasonToSpend').val();
+      var account = $('#accountToSpend').val();
      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-      return instance.spending(amount, MoneyController.userAccount, reason);
+      return instance.spending(amount, account, reason);
     }).then(function(result) {
       return MoneyController.theInstance.amount().then(function(amnt) {
         MoneyView.updateTotal(amnt.toNumber());

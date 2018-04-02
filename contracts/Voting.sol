@@ -72,12 +72,12 @@ contract Voting {
     */
     function verifyBlock(uint _candidateId, address candidateAddr) {
 
-            /*if(onGoingVoters[_candidateAdd].yesCount > 5){
-                onGoingVoters[_candidateAdd].forBlock = true;
-            }
-            else
-                onGoingVoters[_candidateAdd].forBlock = false;*/
-        //will need to redo this
+        if(onGoingVotes[_candidateId].yesCount > 5 && onGoingVotes[_candidateId].forBlock) {
+            b.block(candidateAddr);
+        }
+        else if(onGoingVotes[_candidateId].yesCount > 5 && !onGoingVotes[_candidateId].forBlock) {
+            b.unBlock(candidateAddr);
+        }
     }
 
     /*

@@ -7,7 +7,7 @@ contract DonationAresh {
     struct Expenditures {
         uint id;
         string reason;
-        string account;
+        address account;
         uint amount;
     }
 
@@ -64,8 +64,8 @@ contract DonationAresh {
         }
     }
 
-    function spending(uint amountDecreased, string spendOn, string reason) public returns (bool) {
-        if(!isBlocked(msg.sender)) {
+    function spending(uint amountDecreased, address spendOn, string reason) public returns (bool) {
+        if(!isBlocked(spendOn)) {
             amount = amount - amountDecreased;
             spendCounter++;
             expenditures[spendCounter] = Expenditures(spendCounter, reason, spendOn, amountDecreased);

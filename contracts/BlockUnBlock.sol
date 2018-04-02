@@ -31,11 +31,6 @@ contract BlockUnBlock {
     }
 
     function isBlocked(address toCheck) public returns (bool) {
-        for(uint x=0; x<total; x++) {
-            if(blockedHelper[x] == toCheck) {
-                return blocked[toCheck];
-            }
-        }
-        return false;
+        return blocked[toCheck];
     }
 }
