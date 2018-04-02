@@ -70,7 +70,7 @@ contract Voting {
     if block is false, means client is already blocked and we are
     voting to unblock the client
     */
-    function verifyBlock(uint _candidateAdd) {
+    function verifyBlock(uint _candidateId, address candidateAddr) {
 
             /*if(onGoingVoters[_candidateAdd].yesCount > 5){
                 onGoingVoters[_candidateAdd].forBlock = true;
@@ -95,7 +95,7 @@ contract Voting {
     /*
     0 means no, anything else is yes
     */
-    function vote (uint _candidateId, uint yesOrNo) public {
+    function vote (uint _candidateId, uint yesOrNo, address candidateAddress) public {
         // require that they haven't voted before
        // require(!voters[msg.sender]);
 
@@ -115,7 +115,8 @@ contract Voting {
             }
             onGoingVotes[_candidateId].voterAddress.push(msg.sender);
         }
-        
+
+        verifyBlock(_candidateId, candidateAddress);
         // trigger voted event
        // votedEvent(_candidateId);
     }

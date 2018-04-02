@@ -64,7 +64,15 @@ VoteController = {
   },
 
   vote: function(index, yesOrNo) {
-    return VoteController.theInstance.vote(VoteController.voteJson[index].id.toNumber(), yesOrNo, { from: VoteController.userAccount});
+    VoteController.theInstance.vote(
+        VoteController.voteJson[index].id.toNumber(),
+        yesOrNo,
+        VoteController.voteJson[index].account,
+        { from: VoteController.userAccount}).then(function() {
+            var x=0;
+        }).catch(function(error) {
+            console.error(error);
+        });
   },
 
   // Listen for events emitted from the contract
