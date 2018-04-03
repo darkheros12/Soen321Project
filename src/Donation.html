@@ -18,8 +18,17 @@
     <![endif]-->
   </head>
   <body> 
-  
-    <form>
+  <h1>TEST ZONE</h1><br/>
+  <h2 id="totalDonations"></h2><br/>
+  <input type="text" id="amountToDonate"><br/>
+  <button onclick="MoneyController.donate();">Donate</button><br/><br/>
+
+  <label>Amount: </label><input type="text" id="amountToSpend"><br/>
+  <label>Reason: </label><input type="text" id="reasonToSpend"><br/>
+  <label>Account: </label><input type="text" id="accountToSpend"><br/>
+  <button onclick="MoneyController.spend();">Spend</button>
+
+   <!-- <form>
       <div>
         <center>
             <h1>Donation Page</h1><br/>
@@ -42,9 +51,10 @@
               </tr>
             </tbody>
             </table>
+
         </center>
     </div>
-    </form>
+    </form>-->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -52,8 +62,8 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/web3.min.js"></script>
     <script src="js/truffle-contract.js"></script>
+    <script src="js/blockUnBlockController.js"> </script>
     <script src="js/moneyController.js"></script>
     <script src="js/moneyView.js"></script>
-    <script src="js/ganacheAccounts.js"> </script>
   </body>
 </html>

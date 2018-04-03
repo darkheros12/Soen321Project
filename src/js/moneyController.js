@@ -39,7 +39,26 @@ MoneyController = {
       // Connect provider to interact with contract
       MoneyController.contracts.DonationAresh.setProvider(MoneyController.web3Provider);
 
-      MoneyController.listenForEvents();
+      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+
+        instance.blkUnBlkSetExtern().then(function(val) {
+                if(!val) {
+                    instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
+                    var x=0;
+                }).catch(function(err) {
+                     console.error(err);
+                });
+            }
+        }).catch(function(error) {
+            console.error(error);
+        });
+
+      }).then(function() {
+        MoneyController.listenForEvents();
+      }).catch(function(error) {
+        console.error(error);
+      });
+
     });
   },
 
@@ -47,21 +66,54 @@ MoneyController = {
   listenForEvents: function() {
     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
       moneyJson = {};
-      theInstance = instance;
-      return theInstance.amount();
+      MoneyController.theInstance = instance;
+      return MoneyController.theInstance.amount();
     }).then(function(amount) {
       moneyJson.amount = amount.toNumber();
-      moneyJson.address = theInstance.address;
+      moneyJson.address = MoneyController.theInstance.address;
       MoneyView.render(moneyJson);
+      return MoneyController.theInstance.spendCounter();
+    }).then(function(expn) {
+
+        var limit = expn.toNumber();
+        var expJson = [];
+        var loopCounter = 0;
+
+        for(var x=1; x <= limit; x++) {
+
+            var current = {};
+            MoneyController.theInstance.expenditures(x).then(function(exp) {
+                if(typeof(exp[0] !== undefined)) {
+                    current.id = exp[0];
+                    current.reason = exp[1];
+                    current.account = exp[2];
+                    current.amount = exp[3];
+                    expJson[loopCounter] = current;
+                    loopCounter++;
+                }
+
+                if(expJson.length == limit) {
+                    MoneyView.renderExpenditures(expJson);
+                }
+            }).catch(function(err) {
+                console.error(err);
+            });
+
+        }
     });
   },
 
   donate: function() {
       var amount = $('#amountToDonate').val();
-      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+     MoneyController.theInstance = instance;
       return instance.safeMoney(amount, { from: MoneyController.userAccount });
     }).then(function(result) {
-      MoneyController.listenForEvents();
+      return MoneyController.theInstance.amount().then(function(amnt) {
+        MoneyView.updateTotal(amnt.toNumber());
+      }) .catch(function(err) {
+        console.error(err);
+      });
     }).catch(function(err) {
       console.error(err);
     });
@@ -69,15 +121,37 @@ MoneyController = {
   
 
   spend: function() {
+        //first set the block unblock address
+
+
       var amount = $('#amountToSpend').val();
-      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
-      return instance.spending(amount, { from: MoneyController.userAccount });
+      var reason = $('#reasonToSpend').val();
+      var account = $('#accountToSpend').val();
+     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+      return instance.spending(amount, account, reason);
     }).then(function(result) {
-      MoneyController.listenForEvents();
+      return MoneyController.theInstance.amount().then(function(amnt) {
+        MoneyView.updateTotal(amnt.toNumber());
+      }) .catch(function(err) {
+        console.error(err);
+      });
     }).catch(function(err) {
       console.error(err);
     });
-  }
+  },
+
+  setBlobkUnBlockAddr: function() {
+      BlockUnBlockController.contracts.BlockUnBlock.deployed().then(function(instance) {
+           return MoneyController.theInstance.setBlkUnBlkAddress(instance.address).then(function(val) {
+                var x=0;
+            }).catch(function(err) {
+                console.log(err);
+            })
+      }).catch(function (err) {
+        console.error(err);
+      })
+
+  },
 };
 
 $(function() {

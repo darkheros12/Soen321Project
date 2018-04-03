@@ -9,8 +9,7 @@ Test = {
     } 
   }
 }
-    
-console.log(account);
+
 /*$(function() {
   $(window).load(function() {
     Test.init();
