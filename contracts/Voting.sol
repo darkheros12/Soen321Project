@@ -85,6 +85,9 @@ contract Voting {
             b.unBlock(candidateAddr);
             onGoingVotes[_candidateId].complete = true;
         }
+        else if(onGoingVotes[_candidateId].noCount >= votesForSuccess) {
+            onGoingVotes[_candidateId].complete = true;
+        }
     }
 
     /*

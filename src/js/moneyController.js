@@ -67,11 +67,23 @@ MoneyController = {
     MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
       moneyJson = {};
       MoneyController.theInstance = instance;
+
+      return web3.eth.getBalance(MoneyController.theInstance.address, function(err, val) {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            console.log(val);
+            moneyJson.amount = web3.fromWei(val.toNumber());
+            MoneyView.render(moneyJson);
+        }
+      })
+
       return MoneyController.theInstance.amount();
     }).then(function(amount) {
-      moneyJson.amount = amount.toNumber();
+      //moneyJson.amount = amount.toNumber();
       moneyJson.address = MoneyController.theInstance.address;
-      MoneyView.render(moneyJson);
+      //MoneyView.render(moneyJson);
       return MoneyController.theInstance.spendCounter();
     }).then(function(expn) {
 
@@ -107,16 +119,17 @@ MoneyController = {
       var amount = $('#amountToDonate').val();
      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
      MoneyController.theInstance = instance;
-      return instance.safeMoney(amount, { from: MoneyController.userAccount });
+      return instance.safeMoney(amount, { from: MoneyController.userAccount, value:  web3.toWei(amount, 'ether')});
     }).then(function(result) {
-      return MoneyController.theInstance.amount().then(function(amnt) {
-        MoneyView.updateTotal(amnt.toNumber());
+        var x=0;
+      //return MoneyController.theInstance.amount().then(function(amnt) {
+       // MoneyView.updateTotal(amnt.toNumber());
       }) .catch(function(err) {
         console.error(err);
       });
-    }).catch(function(err) {
+    /*}).catch(function(err) {
       console.error(err);
-    });
+    });*/
   },
   
 
@@ -130,14 +143,15 @@ MoneyController = {
      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
       return instance.spending(amount, account, reason);
     }).then(function(result) {
-      return MoneyController.theInstance.amount().then(function(amnt) {
-        MoneyView.updateTotal(amnt.toNumber());
+        var x=0;
+      //return MoneyController.theInstance.amount().then(function(amnt) {
+        //MoneyView.updateTotal(amnt.toNumber());
       }) .catch(function(err) {
         console.error(err);
       });
-    }).catch(function(err) {
+    /*}).catch(function(err) {
       console.error(err);
-    });
+    });*/
   },
 
   setBlobkUnBlockAddr: function() {

@@ -44,8 +44,12 @@ contract DonationAresh {
         sendAmount = amount;
     }
 
-    function getBalance() returns (uint){
+    /*function getBalance() returns (uint){
         return amount;
+    }*/
+
+    function getBalance() returns (uint){
+        return address(this).balance;
     }
 
     function sendWei(address recp) returns (bool){
@@ -53,9 +57,14 @@ contract DonationAresh {
     }
 
     //send the amount to the creator
-    function safeMoney(uint _amount) public returns (uint) {
+    /*function safeMoney(uint _amount) public returns (uint) {
         amount += _amount;
         return amount;
+    }*/
+
+    function safeMoney(uint _amount) payable{
+        require(_amount >= 0);
+        amount += _amount;
     }
 
     function setBlkUnBlkAddress(address addr) public {
@@ -67,9 +76,21 @@ contract DonationAresh {
         }
     }
 
-    function spending(uint amountDecreased, address spendOn, string reason) public returns (bool) {
+    /*function spending(uint amountDecreased, address spendOn, string reason) public returns (bool) {
         if(!isBlocked(spendOn)) {
             amount = amount - amountDecreased;
+            spendCounter++;
+            expenditures[spendCounter] = Expenditures(spendCounter, reason, spendOn, amountDecreased);
+            return true;
+        }
+        return false;
+    }*/
+
+    function spending(uint amountDecreased, address spendOn, string reason) public returns (bool) {
+        require(amountDecreased >= 0 && amountDecreased <= amount);
+        if(!isBlocked(spendOn)) {
+            amount = amount - amountDecreased;
+            spendOn.send(amountDecreased*(10**uint(18)));
             spendCounter++;
             expenditures[spendCounter] = Expenditures(spendCounter, reason, spendOn, amountDecreased);
             return true;
