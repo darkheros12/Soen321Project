@@ -93,9 +93,10 @@ MoneyController = {
 
         for(var x=1; x <= limit; x++) {
 
-            var current = {};
+
             MoneyController.theInstance.expenditures(x).then(function(exp) {
                 if(typeof(exp[0] !== undefined)) {
+                    var current = {};
                     current.id = exp[0];
                     current.reason = exp[1];
                     current.account = exp[2];
