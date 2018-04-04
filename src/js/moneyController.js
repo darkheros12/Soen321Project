@@ -4,6 +4,7 @@ MoneyController = {
   userAccount: '0x0',
   theInstance: {},
   moneyJson: {},
+  address: null,
 
   init: function() {
     return MoneyController.initWeb3();
@@ -31,6 +32,31 @@ MoneyController = {
     return MoneyController.initContract();
   },
 
+   setFundBallotAddress: function() {
+
+      MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
+
+      MoneyController.address = instance.address;
+      instance.onSpnBal().then(function(val) {
+                if(!val) {
+                    instance.setOnSpenBallot(FundVoteController.address).then(function() {
+                    var x=0;
+                }).catch(function(err) {
+                     console.error(err);
+                });
+            }
+        }).catch(function(error) {
+            console.error(error);
+        });
+
+      }).then(function() {
+        var x=0;
+        //MoneyController.listenForEvents();
+      }).catch(function(error) {
+        console.error(error);
+      });
+
+   },
 
   initContract: function() {
     $.getJSON("DonationAresh.json", function(money) {
@@ -41,6 +67,8 @@ MoneyController = {
 
       MoneyController.contracts.DonationAresh.deployed().then(function(instance) {
 
+        MoneyController.address = instance.address;
+        FundVoteController.init();
         instance.blkUnBlkSetExtern().then(function(val) {
                 if(!val) {
                     instance.setBlkUnBlkAddress(BlockUnBlockController.address).then(function() {
@@ -123,21 +151,13 @@ MoneyController = {
       return instance.safeMoney(amount, { from: MoneyController.userAccount, value:  web3.toWei(amount, 'ether')});
     }).then(function(result) {
         var x=0;
-      //return MoneyController.theInstance.amount().then(function(amnt) {
-       // MoneyView.updateTotal(amnt.toNumber());
       }) .catch(function(err) {
         console.error(err);
       });
-    /*}).catch(function(err) {
-      console.error(err);
-    });*/
   },
   
 
-  spend: function() {
-        //first set the block unblock address
-
-
+  /*spend: function() {
       var amount = $('#amountToSpend').val();
       var reason = $('#reasonToSpend').val();
       var account = $('#accountToSpend').val();
@@ -145,15 +165,10 @@ MoneyController = {
       return instance.spending(amount, account, reason);
     }).then(function(result) {
         var x=0;
-      //return MoneyController.theInstance.amount().then(function(amnt) {
-        //MoneyView.updateTotal(amnt.toNumber());
       }) .catch(function(err) {
         console.error(err);
       });
-    /*}).catch(function(err) {
-      console.error(err);
-    });*/
-  },
+  },*/
 
   setBlobkUnBlockAddr: function() {
       BlockUnBlockController.contracts.BlockUnBlock.deployed().then(function(instance) {

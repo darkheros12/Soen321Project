@@ -21,14 +21,26 @@ contract DonationAresh {
     bool private blkUnBlkSet;
     bool public blkUnBlkSetExtern;
     BlockUnBlock b;
+    address ofSpendBallot;
+
+    bool private onSpnSet;
+    bool public onSpnBal;
 
     function DonationAresh() public{
         creator = msg.sender;
         amount = 0;
         spendCounter = 0;
         blkUnBlkSet = false;
+        onSpnSet = false;
     }
 
+    function setOnSpenBallot(address _ofSpendBallot) {
+        if(!onSpnSet) {
+            onSpnSet = true;
+            onSpnBal = true;
+            ofSpendBallot = _ofSpendBallot;
+        }
+    }
    //fall back function that gets an amount of ether and sends to Creator
     /*function () payable public{
         safeMoney(msg.value);
@@ -88,7 +100,7 @@ contract DonationAresh {
 
     function spending(uint amountDecreased, address spendOn, string reason) public returns (bool) {
         require(amountDecreased >= 0 && amountDecreased <= amount);
-        if(!isBlocked(spendOn)) {
+        if(!isBlocked(spendOn) && (msg.sender == ofSpendBallot)) {
             amount = amount - amountDecreased;
             spendOn.send(amountDecreased*(10**uint(18)));
             spendCounter++;
